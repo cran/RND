@@ -1,5 +1,5 @@
 MOE <-
-function(market.calls, call.strikes, market.puts, put.strikes, s0, r , te, y, file.name = "myfile")
+function(market.calls, call.strikes, market.puts, put.strikes, call.weights = 1,  put.weights = 1, lambda = 1,  s0, r , te, y, file.name = "myfile")
 {
 
 
@@ -20,8 +20,8 @@ function(market.calls, call.strikes, market.puts, put.strikes, s0, r , te, y, fi
   ### BSM Extraction
   ###
 
-  bsm.obj            = bsm.extraction(r = r, y = y, te = te, s0 = s0, market.calls = market.calls, call.strikes = call.strikes, 
-                                      market.puts = market.puts, put.strikes = put.strikes, lambda = 1, hessian.flag = F)
+  bsm.obj            = extract.bsm.density(r = r, y = y, te = te, s0 = s0, market.calls = market.calls, call.strikes = call.strikes, 
+                                      market.puts = market.puts, put.strikes = put.strikes, call.weights = call.weights,  put.weights = put.weights, lambda = lambda, hessian.flag = F)
   bsm.mu   = bsm.obj$mu
   bsm.zeta = bsm.obj$zeta
 
@@ -29,8 +29,8 @@ function(market.calls, call.strikes, market.puts, put.strikes, s0, r , te, y, fi
   ### GB Extraction
   ###
 
-  gb.obj            = gb.extraction(r = r, y = y, te = te, s0 = s0, market.calls = market.calls, call.strikes = call.strikes,
-                                    market.puts = market.puts, put.strikes = put.strikes, lambda = 1, hessian.flag = F)
+  gb.obj            = extract.gb.density(r = r, y = y, te = te, s0 = s0, market.calls = market.calls, call.strikes = call.strikes,
+                                    market.puts = market.puts, put.strikes = put.strikes, call.weights = call.weights,  put.weights = put.weights, lambda = lambda, hessian.flag = F)
   gb.a   =  gb.obj$a 
   gb.b   =  gb.obj$b
   gb.v   =  gb.obj$v
@@ -41,8 +41,8 @@ function(market.calls, call.strikes, market.puts, put.strikes, s0, r , te, y, fi
   ###
 
 
-  mln.obj            = mln.extraction(r = r, y = y, te = te, s0 = s0, market.calls = market.calls, call.strikes = call.strikes, 
-                                      market.puts = market.puts, put.strikes = put.strikes, lambda = 1, hessian.flag = F)
+  mln.obj            = extract.mln.density(r = r, y = y, te = te, s0 = s0, market.calls = market.calls, call.strikes = call.strikes, 
+                                      market.puts = market.puts, put.strikes = put.strikes, call.weights = call.weights,  put.weights = put.weights, lambda = lambda, hessian.flag = F)
   mln.alpha.1   = mln.obj$alpha.1
   mln.meanlog.1 = mln.obj$meanlog.1
   mln.meanlog.2 = mln.obj$meanlog.2
@@ -54,7 +54,7 @@ function(market.calls, call.strikes, market.puts, put.strikes, s0, r , te, y, fi
   ###
 
 
-  ew.obj    = ew.extraction(r = r, y = y, te = te, s0 = s0, market.calls = market.calls, call.strikes = call.strikes, lambda = 1, hessian.flag = F)
+  ew.obj    = extract.ew.density(r = r, y = y, te = te, s0 = s0, market.calls = market.calls, call.strikes = call.strikes, call.weights = call.weights,  lambda = lambda, hessian.flag = F)
   ew.sigma  = ew.obj$sigma
   ew.skew   = ew.obj$skew
   ew.kurt   = ew.obj$kurt
@@ -65,7 +65,7 @@ function(market.calls, call.strikes, market.puts, put.strikes, s0, r , te, y, fi
   ###
 
 
-  shimko.obj  =  shimko.extraction(market.calls = market.calls, call.strikes = call.strikes, r = r, y = y, te = te, s0 = s0, lower = -10, upper = +10)
+  shimko.obj  =  extract.shimko.density(market.calls = market.calls, call.strikes = call.strikes, r = r, y = y, te = te, s0 = s0, lower = -10, upper = +10)
 
   a0  =  shimko.obj$implied.curve.obj$a0 
   a1  =  shimko.obj$implied.curve.obj$a1 
@@ -76,12 +76,6 @@ function(market.calls, call.strikes, market.puts, put.strikes, s0, r , te, y, fi
   ### Graphs
   ###
 
-  #union.strikes       = union(put.strikes, call.strikes)
-  #range.strikes.index = which( (union.strikes < (1.2 * s0)) & (union.strikes > (0.8 * s0))  )  ## This may produce problems
-  #range.strikes       = union.strikes[range.strikes.index]                                     ## One solution it to look at median(strikes) indetad of s0
-
-  #min.x = min(range.strikes)
-  #max.x = max(range.strikes)
 
   min.x = min(put.strikes, call.strikes)
   max.x = max(put.strikes, call.strikes)
@@ -107,10 +101,14 @@ function(market.calls, call.strikes, market.puts, put.strikes, s0, r , te, y, fi
   max.y = max(y.bsm, y.gb, y.mln, y.ew, y.shimko)*1.05
   if ( !is.numeric(max.y) ) max.y = 1
 
+  cut.off = (min(x) + max(x))/2 
+  max.ind = which.max(y.bsm)
+  if (x[max.ind] > cut.off) legend.location = "topleft" else legend.location = "topright"
+
   par(mar=c(5,5,5,5))
   matplot(x,cbind(y.bsm, y.gb, y.mln, y.ew, y.shimko), type="l", col=c("black", "blue","red", "green", "purple"), xlab="Strikes", ylab="Density", 
           lwd=c(2,2,2,2,2), lty = c(1,1,1,1,1), cex.axis = 1.25, cex.lab = 1.25, ylim=c(0,max.y))
-  legend("topright", legend=c("Single LNorm","GenBeta","MixLNorm","EW","Shimko"), col=c("black","blue","red", "green", "purple"), 
+  legend(legend.location, legend=c("Single LNorm","GenBeta","MixLNorm","EW","Shimko"), col=c("black","blue","red", "green", "purple"), 
          lwd = c(2,2,2,2,2), lty = c(1,1,1,1,1), bty="n", cex=1.25)
 
   ###
@@ -150,17 +148,17 @@ function(market.calls, call.strikes, market.puts, put.strikes, s0, r , te, y, fi
   ###
 
   bsm.sigma = bsm.zeta/sqrt(te)
-  bsm.predicted.puts  = bsm.option.price(r = r, te = te, s0 = s0, k = put.strikes,  sigma = bsm.sigma, y = y)$put
-  bsm.predicted.calls = bsm.option.price(r = r, te = te, s0 = s0, k = call.strikes, sigma = bsm.sigma, y = y)$call   
+  bsm.predicted.puts  = price.bsm.option(r = r, te = te, s0 = s0, k = put.strikes,  sigma = bsm.sigma, y = y)$put
+  bsm.predicted.calls = price.bsm.option(r = r, te = te, s0 = s0, k = call.strikes, sigma = bsm.sigma, y = y)$call   
 
   bsm.res.calls = mean(abs(lm(bsm.predicted.calls ~ market.calls)$res))
   bsm.res.puts  = mean(abs(lm(bsm.predicted.puts  ~ market.puts)$res))
    
   par(mfrow=c(1,2), mar=c(7,5,7,5))
-  plot(bsm.predicted.calls ~ market.calls, ylab="Predicted", xlab = "Actual", main=paste("Single LNorm - Calls, ","abs(Res) = ",round(bsm.res.calls,3)),
+  plot(bsm.predicted.calls ~ market.calls, ylab="Predicted", xlab = "Market Price", main=paste("Single LNorm, Calls, ","mean|res| = ",round(bsm.res.calls,3)),
        cex.axis = 1.25, cex.lab = 1.25)
   abline(a=0,b=1, col="red")
-  plot(bsm.predicted.puts  ~ market.puts,  ylab="Predicted", xlab = "Actual", main=paste("Single LNorm - Puts, ","abs(Res) = ",round(bsm.res.puts,3)),
+  plot(bsm.predicted.puts  ~ market.puts,  ylab="Predicted", xlab = "Market Price", main=paste("Single LNorm, Puts, ","mean|res| = ",round(bsm.res.puts,3)),
        cex.axis = 1.25, cex.lab = 1.25)
   abline(a=0,b=1, col="red")
   par(mfrow=c(1,1))
@@ -169,17 +167,17 @@ function(market.calls, call.strikes, market.puts, put.strikes, s0, r , te, y, fi
   ############
 
 
-  gb.predicted.puts   = gb.option.price(r = r, te = te, s0 = s0, k = put.strikes,  y = y, a = gb.a, b = gb.b, v = gb.v, w=gb.w)$put
-  gb.predicted.calls  = gb.option.price(r = r, te = te, s0 = s0, k = call.strikes, y = y, a = gb.a, b = gb.b, v = gb.v, w=gb.w)$call 
+  gb.predicted.puts   = price.gb.option(r = r, te = te, s0 = s0, k = put.strikes,  y = y, a = gb.a, b = gb.b, v = gb.v, w=gb.w)$put
+  gb.predicted.calls  = price.gb.option(r = r, te = te, s0 = s0, k = call.strikes, y = y, a = gb.a, b = gb.b, v = gb.v, w=gb.w)$call 
 
   gb.res.calls = mean(abs(lm(gb.predicted.calls ~ market.calls)$res))
   gb.res.puts  = mean(abs(lm(gb.predicted.puts  ~ market.puts)$res))
    
   par(mfrow=c(1,2), mar=c(7,5,7,5))
-  plot(gb.predicted.calls ~ market.calls, ylab="Predicted", xlab = "Actual", main=paste("GenBeta - Calls, ","abs(Res) = ",round(gb.res.calls,2)),
+  plot(gb.predicted.calls ~ market.calls, ylab="Predicted", xlab = "Market Price", main=paste("GenBeta, Calls, ","mean|res| = ",round(gb.res.calls,2)),
        cex.axis = 1.25, cex.lab = 1.25)
   abline(a=0,b=1, col="red")
-  plot(gb.predicted.puts  ~ market.puts,  ylab="Predicted", xlab = "Actual", main=paste("GenBeta - Puts, ","abs(Res) = ",round(gb.res.puts,2)),
+  plot(gb.predicted.puts  ~ market.puts,  ylab="Predicted", xlab = "Market Price", main=paste("GenBeta, Puts, ","mean|res| = ",round(gb.res.puts,2)),
        cex.axis = 1.25, cex.lab = 1.25)
   abline(a=0,b=1, col="red")
   par(mfrow=c(1,1))
@@ -188,10 +186,10 @@ function(market.calls, call.strikes, market.puts, put.strikes, s0, r , te, y, fi
   ############
 
 
-  mln.predicted.puts   = mln.option.price(r = r, te = te, y = y, k = put.strikes,  
+  mln.predicted.puts   = price.mln.option(r = r, te = te, y = y, k = put.strikes,  
                                   alpha.1 = mln.alpha.1, meanlog.1 = mln.meanlog.1, meanlog.2 = mln.meanlog.2, 
                                   sdlog.1 = mln.sdlog.1, sdlog.2 = mln.sdlog.2)$put
-  mln.predicted.calls  = mln.option.price(r = r, te = te, y = y, k = call.strikes,  
+  mln.predicted.calls  = price.mln.option(r = r, te = te, y = y, k = call.strikes,  
                                   alpha.1 = mln.alpha.1, meanlog.1 = mln.meanlog.1, meanlog.2 = mln.meanlog.2, 
                                   sdlog.1 = mln.sdlog.1, sdlog.2 = mln.sdlog.2)$call
 
@@ -199,10 +197,10 @@ function(market.calls, call.strikes, market.puts, put.strikes, s0, r , te, y, fi
   mln.res.puts  = mean(abs(lm(mln.predicted.puts  ~ market.puts)$res))
   
   par(mfrow=c(1,2), mar=c(7,5,7,5))
-  plot(mln.predicted.calls ~ market.calls, ylab="Predicted", xlab = "Actual", main=paste("MixLNorm - Calls, ","abs(Res) = ",round(mln.res.calls,2)),
+  plot(mln.predicted.calls ~ market.calls, ylab="Predicted", xlab = "Market Price", main=paste("MixLNorm, Calls, ","mean|res| = ",round(mln.res.calls,2)),
        cex.axis = 1.25, cex.lab = 1.25)
   abline(a=0,b=1, col="red")
-  plot(mln.predicted.puts  ~ market.puts,  ylab="Predicted", xlab = "Actual", main=paste("MixLNorm - Puts, ","abs(Res) = ",round(mln.res.puts,2)),
+  plot(mln.predicted.puts  ~ market.puts,  ylab="Predicted", xlab = "Market Price", main=paste("MixLNorm, Puts, ","mean|res| = ",round(mln.res.puts,2)),
        cex.axis = 1.25, cex.lab = 1.25)
   abline(a=0,b=1, col="red")
   par(mfrow=c(1,1))
@@ -211,17 +209,17 @@ function(market.calls, call.strikes, market.puts, put.strikes, s0, r , te, y, fi
   ############
 
 
-  ew.predicted.puts   = ew.option.price(r = r, te = te, s0 = s0, k = put.strikes,  y = y, sigma = ew.sigma, skew = ew.skew, kurt = ew.kurt)$put
-  ew.predicted.calls  = ew.option.price(r = r, te = te, s0 = s0, k = call.strikes, y = y, sigma = ew.sigma, skew = ew.skew, kurt = ew.kurt)$call 
+  ew.predicted.puts   = price.ew.option(r = r, te = te, s0 = s0, k = put.strikes,  y = y, sigma = ew.sigma, skew = ew.skew, kurt = ew.kurt)$put
+  ew.predicted.calls  = price.ew.option(r = r, te = te, s0 = s0, k = call.strikes, y = y, sigma = ew.sigma, skew = ew.skew, kurt = ew.kurt)$call 
 
   ew.res.calls = mean(abs(lm(ew.predicted.calls ~ market.calls)$res))
   ew.res.puts  = mean(abs(lm(ew.predicted.puts  ~ market.puts)$res))
    
   par(mfrow=c(1,2), mar=c(7,5,7,5))
-  plot(ew.predicted.calls ~ market.calls, ylab="Predicted", xlab = "Actual", main=paste("EW - Calls, ","abs(Res) = ",round(ew.res.calls,2)),
+  plot(ew.predicted.calls ~ market.calls, ylab="Predicted", xlab = "Market Price", main=paste("EW, Calls, ","mean|Res| = ",round(ew.res.calls,2)),
        cex.axis = 1.25, cex.lab = 1.25)
   abline(a=0,b=1, col="red")
-  plot(ew.predicted.puts  ~ market.puts,  ylab="Predicted", xlab = "Actual", main=paste("EW - Puts, ","abs(Res) = ",round(ew.res.puts,2)),
+  plot(ew.predicted.puts  ~ market.puts,  ylab="Predicted", xlab = "Market Price", main=paste("EW, Puts, ","mean|Res| = ",round(ew.res.puts,2)),
        cex.axis = 1.25, cex.lab = 1.25)
   abline(a=0,b=1, col="red")
   par(mfrow=c(1,1))
@@ -233,23 +231,23 @@ function(market.calls, call.strikes, market.puts, put.strikes, s0, r , te, y, fi
   shimko.predicted.puts = numeric(length(put.strikes))
   for (i in 1:length(put.strikes))
   {
-    shimko.predicted.puts[i]   = shimko.option.price(r = r, te = te, s0 = s0, k = put.strikes[i],  y = y, a0 = a0, a1 = a1, a2 = a2)$put
+    shimko.predicted.puts[i]   = price.shimko.option(r = r, te = te, s0 = s0, k = put.strikes[i],  y = y, a0 = a0, a1 = a1, a2 = a2)$put
   }
   
   shimko.predicted.calls = numeric(length(put.strikes))
   for (j in 1:length(put.strikes))
   {
-    shimko.predicted.calls[j]  = shimko.option.price(r = r, te = te, s0 = s0, k = call.strikes[j], y = y, a0 = a0, a1 = a1, a2 = a2)$call 
+    shimko.predicted.calls[j]  = price.shimko.option(r = r, te = te, s0 = s0, k = call.strikes[j], y = y, a0 = a0, a1 = a1, a2 = a2)$call 
   }
 
   shimko.res.calls = mean(abs(lm(shimko.predicted.calls ~ market.calls)$res))
   shimko.res.puts  = mean(abs(lm(shimko.predicted.puts  ~ market.puts)$res))
    
   par(mfrow=c(1,2), mar=c(7,5,7,5))
-  plot(shimko.predicted.calls ~ market.calls, ylab="Predicted", xlab = "Actual", main=paste("Shimko - Calls, ","abs(Res) = ",round(shimko.res.calls,2)),
+  plot(shimko.predicted.calls ~ market.calls, ylab="Predicted", xlab = "Market Price", main=paste("Shimko - Calls, ","mean|Res| = ",round(shimko.res.calls,2)),
        cex.axis = 1.25, cex.lab = 1.25)
   abline(a=0,b=1, col="red")
-  plot(shimko.predicted.puts  ~ market.puts,  ylab="Predicted", xlab = "Actual", main=paste("Shimko - Puts, ","abs(Res) = ",round(shimko.res.puts,2)),
+  plot(shimko.predicted.puts  ~ market.puts,  ylab="Predicted", xlab = "Market Price", main=paste("Shimko - Puts, ","mean|Res| = ",round(shimko.res.puts,2)),
        cex.axis = 1.25, cex.lab = 1.25)
   abline(a=0,b=1, col="red")
   par(mfrow=c(1,1))

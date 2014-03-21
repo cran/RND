@@ -1,13 +1,13 @@
-\name{mln.extraction}
-\alias{mln.extraction}
-\title{Mixture of Lognormal Extraction}
+\name{extract.mln.density}
+\alias{extract.mln.density}
+\title{Extract Mixture of Lognormal Densities}
 \description{
-  \code{mln.extraction} extracts the parameters of the mixture of two lognormals.
+  \code{mln.extraction} extracts the parameters of the mixture of two lognormals densities.
 }
 \usage{
-mln.extraction(initial.values = c(NA, NA, NA, NA, NA), r, y, te, s0, 
-               market.calls, call.strikes, market.puts, put.strikes, 
-               lambda = 1, hessian.flag = F)
+extract.mln.density(initial.values = c(NA, NA, NA, NA, NA), r, y, te, s0, 
+  market.calls, call.strikes, call.weights = 1, market.puts, put.strikes, 
+  put.weights = 1, lambda = 1, hessian.flag = F, cl = list(maxit = 10000))
 }
 \arguments{
   \item{initial.values}{initial values for the optimization}
@@ -17,14 +17,17 @@ mln.extraction(initial.values = c(NA, NA, NA, NA, NA), r, y, te, s0,
   \item{s0}{current asset value}
   \item{market.calls}{market calls (most expensive to cheapest)}
   \item{call.strikes}{strikes for the calls (smallest to largest)}
+  \item{call.weights}{weights to be used for calls}
   \item{market.puts}{market calls (cheapest to most expensive)}
   \item{put.strikes}{strikes for the puts (smallest to largest)}
+  \item{put.weights}{weights to be used for puts}
   \item{lambda}{Penalty parameter to enforce the martingale condition}
   \item{hessian.flag}{if F, no hessian is produced}
+  \item{cl}{list of parameter values to be passed to the optimization function}
 }
 \details{
-  mln is the density f(x) = alpha.1 * g(x) + (1 - alpha.1) * h(x), 
-  where g and h are densities of two lognormals.
+  mln is the density f(x) = alpha.1 * g(x) + (1 - alpha.1) * h(x), where g and h are densities of two lognormals with
+  parameters (mean.log.1, sdlog.1) and (mean.log.2, sdlog.2) respectively.
 }
 \value{
   \item{alpha.1}{extracted proportion of the first lognormal.  Second one is 1 - \code{alpha.1}}
@@ -46,21 +49,20 @@ mln.extraction(initial.values = c(NA, NA, NA, NA, NA), r, y, te, s0,
 
   P. Soderlind and L.E.O. Svensson (1997)
   New techniques to extract market expectations from financial instruments.
-  \emph{Journal of Monetary Economics}, 40, 383-429
+  \emph{Journal of Monetary Economics}, 40, 383-4
 
   E. Jondeau and S. Poon and M. Rockinger (2007):
-  \emph{Financial Modeling Under Non-Gaussian Distributions}
+  \emph{Financial Modeling Under Non-Gaussian Distributions} 
+  Springer-Verlag, London
 
 }
 \author{Kam Hamidieh}
-\note{Put additional notes here...}
-\seealso{See also here...}
 \examples{
 
-###
-### Create some calls and puts based on mln and 
-### see if we can extract the correct values.
-###
+#
+# Create some calls and puts based on mln and 
+# see if we can extract the correct values.
+#
 
 
 r         = 0.05
@@ -74,16 +76,16 @@ alpha.1   = 0.4
 
 
 call.strikes = seq(from = 800, to = 1200, by = 10)
-market.calls = mln.option.price(r = r, y = y, te = te, k = call.strikes, 
+market.calls = price.mln.option(r = r, y = y, te = te, k = call.strikes, 
                alpha.1 = alpha.1, meanlog.1 = meanlog.1, meanlog.2 = meanlog.2, 
                                 sdlog.1 = sdlog.1, sdlog.2 = sdlog.2)$call
 
-s0 = mln.option.price(r = r, y = y, te = te, k = call.strikes, alpha.1 = alpha.1, 
+s0 = price.mln.option(r = r, y = y, te = te, k = call.strikes, alpha.1 = alpha.1, 
                       meanlog.1 = meanlog.1, meanlog.2 = meanlog.2, 
                       sdlog.1 = sdlog.1, sdlog.2 = sdlog.2)$s0
 s0
 put.strikes  = seq(from = 805, to = 1200, by = 10)
-market.puts  = mln.option.price(r = r, y = y, te = te, k = put.strikes, 
+market.puts  = price.mln.option(r = r, y = y, te = te, k = put.strikes, 
                                 alpha.1 = alpha.1, meanlog.1 = meanlog.1, 
                                 meanlog.2 = meanlog.2, sdlog.1 = sdlog.1, 
                                 sdlog.2 = sdlog.2)$put
@@ -92,11 +94,10 @@ market.puts  = mln.option.price(r = r, y = y, te = te, k = put.strikes,
 ### The extracted values should be close to the actual values.
 ###
 
-mln.extraction(r = r, y = y, te = te, s0 = s0, market.calls = market.calls, 
+extract.mln.density(r = r, y = y, te = te, s0 = s0, market.calls = market.calls, 
                call.strikes = call.strikes, market.puts = market.puts, 
                put.strikes = put.strikes, lambda = 1, hessian.flag = FALSE)
 
 
 }
-\keyword{ Put a keyword here... }
-\keyword{ Put a keyword here... }
+

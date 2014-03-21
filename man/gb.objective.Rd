@@ -2,11 +2,11 @@
 \alias{gb.objective}
 \title{Generalized Beta Objective}
 \description{
-  \code{gb.objective} is the objective function to be minimized in \code{gb.extraction}.
+  \code{gb.objective} is the objective function to be minimized in \code{extract.gb.density}.
 }
 \usage{
-gb.objective(theta, r, te, y, s0, market.calls, call.strikes, 
-             market.puts, put.strikes, lambda = 1)
+gb.objective(theta, r, te, y, s0, market.calls, call.strikes, call.weights = 1, 
+  market.puts, put.strikes, put.weights = 1, lambda = 1)
 }
 \arguments{
   \item{theta}{initial values for optimization}
@@ -16,16 +16,19 @@ gb.objective(theta, r, te, y, s0, market.calls, call.strikes,
   \item{s0}{current asset value}
   \item{market.calls}{market calls (most expensive to cheapest)}
   \item{call.strikes}{strikes for the calls (smallest to largest)}
+  \item{call.weights}{weights to be used for calls}
   \item{market.puts}{market calls (cheapest to most expensive)}
   \item{put.strikes}{strikes for the puts (smallest to largest)}
+  \item{put.weights}{weights to be used for puts}
   \item{lambda}{Penalty parameter to enforce the martingale condition}
 }
-\details{Put additional details here...}
+\details{
+  This is the function minimized by \code{extract.gb.desnity} function.
+}
 \value{
-  \item{obj }{Value of the objective function}
+  \item{obj }{value of the objective function}
 }
 \references{
-
   R.M. Bookstaber and J.B. McDonald (1987)
   A general distribution for describing security price returns.
   \emph{Journal of Business}, 60, 401-424 
@@ -36,16 +39,17 @@ gb.objective(theta, r, te, y, s0, market.calls, call.strikes,
 
   E. Jondeau and S. Poon and M. Rockinger (2007):
   \emph{Financial Modeling Under Non-Gaussian Distributions} 
+  Springer-Verlag, London
 
 }
 \author{Kam Hamidieh}
-\note{Put notes here...}
-\seealso{Put see also part here...}
 \examples{
 
-###
-### The objective should be very small!
-###
+#
+# The objective should be very small!
+# Note the weights are automatically
+# set to 1.
+#
 
 r  = 0.03
 te = 50/365
@@ -59,11 +63,11 @@ s0 = exp((y-r)*te) * b * beta(v + 1/a, w - 1/a)/beta(v,w)
 s0
 
 call.strikes = seq(from = 800, to = 1200, by = 10)
-market.calls = gb.option.price(r = r, te = te, s0 = s0, y = y, 
+market.calls = price.gb.option(r = r, te = te, s0 = s0, y = y, 
                         k = call.strikes, a = a, b = b, v = v, w = w)$call
 
 put.strikes = seq(from = 805, to = 1200, by = 10)
-market.puts = gb.option.price(r = r, te = te, s0 = s0, y = y, 
+market.puts = price.gb.option(r = r, te = te, s0 = s0, y = y, 
                         k = put.strikes, a = a, b = b, v = v, w = w)$put
 
 gb.objective(theta=c(a,b,v,w),r = r, te = te, y = y, s0 = s0, 
@@ -72,5 +76,4 @@ gb.objective(theta=c(a,b,v,w),r = r, te = te, y = y, s0 = s0,
 
 
 }
-\keyword{ Put a keyword here... }
-\keyword{ Put a keyword here... }
+

@@ -1,4 +1,4 @@
-mln.option.price <-
+price.mln.option <-
 function(r, te, y, k, alpha.1, meanlog.1, meanlog.2, sdlog.1, sdlog.2)
 {
 

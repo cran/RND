@@ -2,7 +2,7 @@
 \alias{pgb}
 \title{CDF of Generalized Beta}
 \description{
-   \code{pgb} is the cumulative probability of a genaralized beta random variable.
+   \code{pgb} is the cumulative distribution function (CDF) of a genaralized beta random variable.
 }
 \usage{
 pgb(x, a, b, v, w)
@@ -16,7 +16,7 @@ pgb(x, a, b, v, w)
 }
 \details{
   Let B be a beta random variable with parameters v and w.  Then Z = b *(B/(1-B))^(1/a) is a generalized
-  beta with parameter with (a,b,v,w).
+  beta random variable with parameters (a,b,v,w).
 }
 \value{
   \item{out }{CDF value at x}
@@ -32,17 +32,14 @@ pgb(x, a, b, v, w)
 
   E. Jondeau and S. Poon and M. Rockinger (2007):
   \emph{Financial Modeling Under Non-Gaussian Distributions} 
-
+  Springer-Verlag, London
 }
 \author{Kam Hamidieh}
-\note{Put more notes here...}
-\seealso{Put see also here...}
 \examples{
 
-
-###
-### What does the cdf of a GB look like?
-###
+#
+# What does the cdf of a GB look like?
+#
 
 a  = 1
 b  = 10
@@ -55,5 +52,3 @@ plot(y ~ x, type = "l")
 abline(h=c(0,1), lty=2) 
 
 }
-\keyword{ Put a keyword here... }
-\keyword{ Put a keyword here... }

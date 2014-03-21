@@ -1,5 +1,5 @@
 bsm.objective <-
-function(s0, r, te, y, market.calls, call.strikes, market.puts, put.strikes, lambda = 1, theta)
+function(s0, r, te, y, market.calls, call.strikes, call.weights = 1, market.puts, put.strikes, put.weights = 1, lambda = 1, theta)
 {
   mu               = theta[1]
   zeta             = theta[2]    
@@ -26,7 +26,7 @@ function(s0, r, te, y, market.calls, call.strikes, market.puts, put.strikes, lam
   ### Finally ... the objective function value
   ###
 
-  if ( zeta < 0 ) {obj = 10^7} else { obj = sum((theoretical.calls - market.calls)^2) + sum((theoretical.puts - market.puts)^2) + lambda * (s0*exp(-y*te) - expected.value * discount.factor )^2 }
+  if ( zeta < 0 ) {obj = 10^7} else { obj = sum(call.weights*(theoretical.calls - market.calls)^2) + sum(put.weights*(theoretical.puts - market.puts)^2) + lambda * (s0*exp(-y*te) - expected.value * discount.factor )^2 }
 
   obj
 

@@ -1,11 +1,11 @@
-\name{mln.option.price}
-\alias{mln.option.price}
-\title{Mixture of Lognormal Option Price}
+\name{price.mln.option}
+\alias{price.mln.option}
+\title{Price Options on Mixture of Lognormals}
 \description{
-  \code{mln.option.price} gives the price of a call and a put option at a set strike when the risk neutral density is a mixture of two lognormals.
+  \code{mln.option.price} gives the price of a call and a put option at a strike when the risk neutral density is a mixture of two lognormals.
 }
 \usage{
-mln.option.price(r, te, y, k, alpha.1, meanlog.1, meanlog.2, sdlog.1, sdlog.2)
+price.mln.option(r, te, y, k, alpha.1, meanlog.1, meanlog.2, sdlog.1, sdlog.2)
 }
 \arguments{
   \item{r}{risk free rate}
@@ -19,7 +19,8 @@ mln.option.price(r, te, y, k, alpha.1, meanlog.1, meanlog.2, sdlog.1, sdlog.2)
   \item{sdlog.2}{standard deviation of the log of the second lognormal}
 }
 \details{
-  mln is the density f(x) = alpha.1 * g(x) + (1 - alpha.1) * h(x), where g and h are densities of two lognormals.
+  mln is the density f(x) = alpha.1 * g(x) + (1 - alpha.1) * h(x), where g and h are densities of two lognormals with
+  parameters (mean.log.1, sdlog.1) and (mean.log.2, sdlog.2) respectively.
 }
 \value{
   \item{call }{call price}
@@ -41,15 +42,14 @@ mln.option.price(r, te, y, k, alpha.1, meanlog.1, meanlog.2, sdlog.1, sdlog.2)
 
   E. Jondeau and S. Poon and M. Rockinger (2007):
   \emph{Financial Modeling Under Non-Gaussian Distributions}
+  Springer-Verlag, London
+
 }
 \author{Kam Hamidieh}
-\note{Put additional notes here...}
-\seealso{Put addition notes here...}
 \examples{
-
-###
-### Try out a range of options
-###
+#
+# Try out a range of options
+#
 
 r  = 0.05
 te = 60/365
@@ -62,7 +62,7 @@ sdlog.2   = 0.055
 alpha.1   = 0.4
 
 
-mln.prices = mln.option.price(r = r, y = y, te = te, k = k, alpha.1 = alpha.1, 
+mln.prices = price.mln.option(r = r, y = y, te = te, k = k, alpha.1 = alpha.1, 
   meanlog.1 = meanlog.1, meanlog.2 = meanlog.2, sdlog.1 = sdlog.1, sdlog.2 = sdlog.2)
 
 par(mfrow=c(1,2))
@@ -70,7 +70,5 @@ plot(mln.prices$call ~ k)
 plot(mln.prices$put  ~ k)
 par(mfrow=c(1,1))
 
-
 }
-\keyword{ Put a keyword here... }
-\keyword{ Put a keyword here... }
+

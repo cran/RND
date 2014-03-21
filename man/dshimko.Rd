@@ -1,6 +1,6 @@
 \name{dshimko}
 \alias{dshimko}
-\title{Density Shimko}
+\title{Density Implied by Shimko Method}
 \description{
   \code{dshimko} is the probability density function implied by the Shimko method.
 }
@@ -13,16 +13,14 @@ dshimko(r, te, s0, k, y, a0, a1, a2)
   \item{s0}{current asset value}
   \item{k}{strike at which volatility to be computed}
   \item{y}{dividend yield}
-  \item{a0}{constant term in the quadratic ploynomial}
-  \item{a1}{coefficient term of k in the quadratic ploynomial}
-  \item{a2}{coefficient term of k squared in the quadratic ploynomial}
+  \item{a0}{constant term in the quadratic polynomial}
+  \item{a1}{coefficient term of k in the quadratic polynomial}
+  \item{a2}{coefficient term of k squared in the quadratic polynomial}
 }
 \details{
-Put additional detail here...
+The implied volatility is modeled as: \eqn{\sigma(k) = a_0 + a_1 k + a_2 k^2}
 }
-\value{
-  \item{out }{density value at x}
-}
+\value{density value at x}
 \references{
   D. Shimko (1993)
   Bounds of probability.
@@ -30,15 +28,15 @@ Put additional detail here...
 
   E. Jondeau and S. Poon and M. Rockinger (2007):
   \emph{Financial Modeling Under Non-Gaussian Distributions} 
+  Springer-Verlag, London
+
 }
 \author{Kam Hamidieh}
-\note{Put further notes here...}
-\seealso{Put other things to see here...}
 \examples{
 
-###
-### a0, a1, a2 values come from (approximately) Shimko's paper.
-###
+#
+# a0, a1, a2 values come from Shimko's paper.
+#
 
 r     =  0.05
 y     =  0.02
@@ -50,19 +48,18 @@ s0    =  400
 k     =  seq(from = 250, to = 500, by = 1)
 sigma =  0.15
 
-###
-### Does it look like a proper density and intergate to one?
-###
+#
+# Does it look like a proper density and intergate to one?
+#
 
 dx = dshimko(r = r, te = te, s0 = s0, k = k, y = y, a0 = a0, a1 = a1, a2 = a2)
 plot(dx ~ k, type="l")
 
-###
-### sum(dx) should be about 1 since dx is a density.
-###
+#
+# sum(dx) should be about 1 since dx is a density.
+#
 
 sum(dx)
 
 }
-\keyword{ Put a keyword here... }
-\keyword{ Put a keyword here... }
+

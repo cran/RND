@@ -1,42 +1,36 @@
 \name{vix.2013.06.25}
 \alias{vix.2013.06.25}
 \docType{data}
-\title{VIX Index Option}
+\title{
+VIX Options on 2013-06-25
+}
 \description{
-    VIX options expiring in August were obtained on June 25, 2013.
+  This dataset contains VIX options with 57 days to expiration at the end of the business day June 25, 2013.
+  On June 25, 2013, VIX closed at 18.21.
 }
 \usage{data(vix.2013.06.25)}
 \format{
   A data frame with 35 observations on the following 13 variables.
   \describe{
-    \item{\code{last}}{last quote for call option}
-    \item{\code{change}}{change in call option price}
-    \item{\code{bid}}{bid price for call options}
-    \item{\code{ask}}{ask price for call options}
-    \item{\code{vol}}{volume of call options traded}
-    \item{\code{openint}}{total number of call option contracts}
-    \item{\code{strike}}{strike value}
-    \item{\code{last.1}}{last quote for put option}
-    \item{\code{change.1}}{change in call option price}
-    \item{\code{bid.1}}{bid price for put options}
-    \item{\code{ask.1}}{ask price for put options}
-    \item{\code{vol.1}}{volume of put options traded}
-    \item{\code{openint.1}}{total number of put option contracts}
+    \item{\code{last.c}}{closing call price}
+    \item{\code{change.c}}{change in call price from previous day}
+    \item{\code{bid.c}}{call bid price}
+    \item{\code{ask.c}}{call ask price}
+    \item{\code{vol.c}}{call volume}
+    \item{\code{openint.c}}{call open interest}
+    \item{\code{strike}}{option strike}
+    \item{\code{last.p}}{closing put price}
+    \item{\code{change.p}}{change in put price from previous day}
+    \item{\code{bid.p}}{put bid price}
+    \item{\code{ask.p}}{put ask price}
+    \item{\code{vol.p}}{put volume}
+    \item{\code{openint.p}}{put open interest}
   }
 }
-\details{There were 57 days to expiration.  VIX closed at 18.21 on 6/25/2013.}
-\source{http://finance.yahoo.com/q?s=^VIX}
-\references{None.}
-\examples{
-
-data(vix.2013.06.25)
-
-###
-### See a few lines of the data set
-###
-
-head(vix.2013.06.25)
-tail(vix.2013.06.25)
-
+\source{
+http://www.cboe.com/DelayedQuote/QuoteTableDownload.aspx
 }
-\keyword{datasets}
+\examples{
+data(vix.2013.06.25)
+}
+\keyword{VIX Options}

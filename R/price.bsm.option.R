@@ -1,4 +1,4 @@
-bsm.option.price <-
+price.bsm.option <-
 function(s0, k, r, te, sigma, y)
 {
   d1 = (log(s0/k) + (r - y + (sigma^2)/2) * te) / (sigma * sqrt(te))

@@ -1,9 +1,7 @@
 \name{dew}
 \alias{dew}
-\title{Edgeworth Density Function}
-\description{
-  \code{dew} is the probability density function implied by the Edgeworth expansion method.
-}
+\title{Edgeworth Density}
+\description{  \code{dew} is the probability density function implied by the Edgeworth expansion method.}
 \usage{
 dew(x, r, y, te, s0, sigma, skew, kurt)
 }
@@ -17,15 +15,14 @@ dew(x, r, y, te, s0, sigma, skew, kurt)
   \item{skew}{normalized skewness}
   \item{kurt}{normalized kurtosis}
 }
-\details{
-Put description here
-}
+\details{This density function attempts to capture deviations from lognormal density by using Edgeworth expansions.}
 \value{
-  \item{out }{density value at x}
+  density value at x
 }
 \references{
   E. Jondeau and S. Poon and M. Rockinger (2007):
   \emph{Financial Modeling Under Non-Gaussian Distributions} 
+  Springer-Verlag, London
 
   R. Jarrow and A. Rudd (1982)
   Approximate valuation for arbitrary stochastic processes.
@@ -37,14 +34,11 @@ Put description here
   \emph{Journal of Futures Markets}, 6, 611-629
 }
 \author{Kam Hamidieh}
-\note{Put further notes here...}
-\section{Warning }{Any?} 
-\seealso{Put other things to see here...}
 \examples{
 
-###
-### Look at a true lognorma density & related dew
-###
+#
+# Look at a true lognorma density & related dew
+#
 r       = 0.05
 y       = 0.03
 s0      = 1000
@@ -72,5 +66,4 @@ matplot(strikes, cbind(bsm.density, ew.density.4, ew.density.5), type="l",
         lty=c(1,1,1), col=c("black","red","blue"), 
         main="Black = BSM,  Red = EW 1.5 Times,  Blue = EW 0.50 & 2")
 }
-\keyword{ Put a keyword here... }
-\keyword{ Put a keyword here... }
+

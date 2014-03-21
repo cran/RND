@@ -1,9 +1,7 @@
 \name{dgb}
 \alias{dgb}
-\title{Density of Generalized Beta}
-\description{
-  \code{dgb} is the probability density function of generalized beta distribution.
-}
+\title{Generalized Beta Density}
+\description{\code{dgb} is the probability density function of generalized beta distribution.}
 \usage{
 dgb(x, a, b, v, w)
 }
@@ -15,12 +13,10 @@ dgb(x, a, b, v, w)
   \item{w}{second beta parameter > 0}
 }
 \details{
-  Let B be a beta random variable with parameters v and w.  Then Z = b *(B/(1-B))^(1/a) is a generalized
-  beta with parameter with (a,b,v,w).
+  Let B be a beta random variable with parameters v and w, then \eqn{Z = b(B/(1-B))^{1/a}} 
+  is a generalized beta with parameters (a,b,v,w).
 }
-\value{
-  \item{out }{density value at x}
-}
+\value{density value at x}
 \references{
   R.M. Bookstaber and J.B. McDonald (1987)
   A general distribution for describing security price returns.
@@ -32,15 +28,13 @@ dgb(x, a, b, v, w)
 
   E. Jondeau and S. Poon and M. Rockinger (2007):
   \emph{Financial Modeling Under Non-Gaussian Distributions} 
-
+  Springer-Verlag, London
 }
 \author{Kam Hamidieh}
-\note{Put notes here...}
-\seealso{Put see also here...}
 \examples{
-###
-### Just simple plot of the density
-###
+#
+# Just simple plot of the density
+#
 
 x = seq(from = 500, to = 1500, length.out = 10000)
 a = 10
@@ -51,5 +45,4 @@ dx = dgb(x = x, a = a, b = b, v = v, w = w)
 plot(dx ~ x, type="l")
 
 }
-\keyword{ Put a keyword here... }
-\keyword{ Put a keyword here... }
+

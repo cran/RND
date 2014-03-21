@@ -1,49 +1,42 @@
 \name{sp500.2013.04.19}
 \alias{sp500.2013.04.19}
 \docType{data}
-\title{SP 500 Index Option}
+\title{
+S&P 500 Index Options on 2013-04-19
+}
 \description{
-  S&P 500 Options expiring in June obtained at the end of business day April 19, 2013.
+  This dataset contains S&P 500 options with 62 days to expiration at the end of the business day April 19, 2013.  
+  On April 19, 2013, S&P 500 closed at 1555.25.
 }
 \usage{data(sp500.2013.04.19)}
 \format{
   A data frame with 171 observations on the following 19 variables.
   \describe{
-    \item{\code{bidsize}}{bid size for call options}
-    \item{\code{bid}}{bid price for call options}
-    \item{\code{ask}}{ask price for call options}
-    \item{\code{asksize}}{ask size for call options}
-    \item{\code{chg}}{change in the price}
-    \item{\code{impvol}}{implied volatility from calls}
-    \item{\code{vol}}{volume of call options traded}
-    \item{\code{openint}}{total number of call option contracts}
-    \item{\code{delta}}{delta of the call option}
-    \item{\code{strike}}{strike value}
-    \item{\code{bidsize.1}}{bid size for put options}
-    \item{\code{bid.1}}{bid price for put options}
-    \item{\code{ask.1}}{ask price for put options}
-    \item{\code{asksize.1}}{ask size for put options}
-    \item{\code{chg.1}}{change in the price}
-    \item{\code{impvol.1}}{implied volatility from calls}
-    \item{\code{vol.1}}{volume of put options traded}
-    \item{\code{openint.1}}{total number of put option contracts}
-    \item{\code{delta.1}}{delta of the put option}
+    \item{\code{bidsize.c}}{call bid size}
+    \item{\code{bid.c}}{call bid price}
+    \item{\code{ask.c}}{call ask price}
+    \item{\code{asksize.c}}{call ask size}
+    \item{\code{chg.c}}{change in call price}
+    \item{\code{impvol.c}}{call implied volatility}
+    \item{\code{vol.c}}{call volume}
+    \item{\code{openint.c}}{call open interest}
+    \item{\code{delta.c}}{call delta}
+    \item{\code{strike}}{option strike}
+    \item{\code{bidsize.p}}{put bid size}
+    \item{\code{bid.p}}{put bid price}
+    \item{\code{ask.p}}{put ask price}
+    \item{\code{asksize.p}}{put ask size}
+    \item{\code{chg.p}}{change in put price}
+    \item{\code{impvol.p}}{put implied volatility}
+    \item{\code{vol.p}}{put volume}
+    \item{\code{openint.p}}{put open interest}
+    \item{\code{delta.p}}{put delta}
   }
 }
-\details{There were 62 days to expiration.  S&P 500 closed at 1555 on 4/19/2013.  }
-\source{The data were scraped from the Web.}
-\references{None.}
-\examples{
-
-data(sp500.2013.04.19)
-
-###
-### Take a look at a few rows of the data...
-###
-
-head(sp500.2013.04.19)
-tail(sp500.2013.04.19)
-
-
+\source{
+http://www.cboe.com/DelayedQuote/QuoteTableDownload.aspx
 }
-\keyword{datasets}
+\examples{
+data(sp500.2013.04.19)
+}
+\keyword{S&P 500}

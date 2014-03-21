@@ -1,11 +1,11 @@
-\name{gb.option.price}
-\alias{gb.option.price}
+\name{price.gb.option}
+\alias{price.gb.option}
 \title{Generalized Beta Option Pricing}
 \description{
-  \code{gb.option.price} computes the price of European options.
+  \code{price.gb.option} computes the price of options.
 }
 \usage{
-gb.option.price(r, te, s0, k, y, a, b, v, w)
+price.gb.option(r, te, s0, k, y, a, b, v, w)
 }
 \arguments{
   \item{r}{risk free interest rate}
@@ -18,10 +18,14 @@ gb.option.price(r, te, s0, k, y, a, b, v, w)
   \item{v}{first beta paramter > 0}
   \item{w}{second beta parameter > 0}
 }
-\details{Put details here...}
+\details{
+  This function is used to compute European option prices when the underlying 
+  has a generalized beta (GB) distribution.    Let B be a beta random variable with parameters v and w.  
+  Then Z = b *(B/(1-B))^(1/a) is a generalized beta random variable with parameters with (a,b,v,w).
+}
 \value{
-  \item{prob.1 }{Probability of GB(a,b,v+1/a,w-1/a) rv will be above k, strike}
-  \item{prob.2 }{Probability of GB(a,b,v,w) rv will be above k, strike}
+  \item{prob.1 }{Probability that a GB random variable with parameters (a,b,v+1/a,w-1/a) will be above the strike}
+  \item{prob.2 }{Probability that a GB random variable with parameters (a,b,v,w) will be above the strike}
   \item{call }{call price}
   \item{put }{put price}
 }
@@ -36,16 +40,16 @@ gb.option.price(r, te, s0, k, y, a, b, v, w)
   \emph{Journal of Business}, 60, 401-424 
 
   E. Jondeau and S. Poon and M. Rockinger (2007):
-  \emph{Financial Modeling Under Non-Gaussian Distributions} }
+  \emph{Financial Modeling Under Non-Gaussian Distributions}
+  Springer-Verlag, London
 
+}
 \author{Kam Hamidieh}
-\note{Put further notes here}
-\seealso{Put see also here}
 \examples{
 
-###
-### A basic GB option pricing....
-###
+#
+# A basic GB option pricing....
+#
 
 r  = 0.03
 te = 50/365
@@ -57,9 +61,7 @@ b  = 1000
 v  = 2.85
 w  = 2.85
 
-gb.option.price(r = r, te = te, s0 = s0, k = k, y = y, a = a, b = b, v = v, w = w)
-
+price.gb.option(r = r, te = te, s0 = s0, k = k, y = y, a = a, b = b, v = v, w = w)
 
 }
-\keyword{ Put a keyword here... }
-\keyword{ Put a keyword here... }
+

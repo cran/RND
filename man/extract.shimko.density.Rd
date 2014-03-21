@@ -1,12 +1,12 @@
-\name{shimko.extraction}
-\alias{shimko.extraction}
-\title{Shimko Extraction}
+\name{extract.shimko.density}
+\alias{extract.shimko.density}
+\title{Extract Risk Neutral Density based on Shimko's Method}
 \description{
-  \code{shimko.extraction} extracts the implied volatility 
-        quadratic function parameters based on Shimko's.
+  \code{shimko.extraction} extracts the implied risk neutral density
+  based on modeling the volatility as a quadratic function of the strikes.
 }
 \usage{
-shimko.extraction(market.calls, call.strikes, r, y, te, s0, lower, upper)
+extract.shimko.density(market.calls, call.strikes, r, y, te, s0, lower, upper)
 }
 \arguments{
   \item{market.calls}{market calls (most expensive to cheapest)}
@@ -18,7 +18,7 @@ shimko.extraction(market.calls, call.strikes, r, y, te, s0, lower, upper)
   \item{lower}{lower bound for the search of implied volatility}
   \item{upper}{upper bound for the search of implied volatility}
 }
-\details{Add more detail}
+\details{The correct values for range of search must be specified.}
 \value{
   \item{implied.curve.obj }{variable that holds a0, a1, and a2 which are the constant terms of the quadratic polynomial}
   \item{shimko.density }{density evaluated at the strikes}
@@ -31,16 +31,14 @@ shimko.extraction(market.calls, call.strikes, r, y, te, s0, lower, upper)
 
   E. Jondeau and S. Poon and M. Rockinger (2007):
   \emph{Financial Modeling Under Non-Gaussian Distributions} 
+  Springer-Verlag, London
 }
 \author{Kam Hamidieh}
-\note{Put additional notes here...}
-\section{Warning }{Shimko's paper has an error (typo?)...the density derived lacks a negative sign!}
-\seealso{See additional details here}
 \examples{
 
-###
-###  Test the function shimko.extraction.  If BSM holds then a1 = a2 = 0. 
-###
+#
+#  Test the function shimko.extraction.  If BSM holds then a1 = a2 = 0. 
+#
 
 r       =  0.05
 y       =  0.02
@@ -49,15 +47,14 @@ s0      =  1000
 k       =  seq(from = 800, to = 1200, by = 5)
 sigma   =  0.25
 
-bsm.calls = bsm.option.price(r = r, te = te, s0 = s0, k = k, 
+bsm.calls = price.bsm.option(r = r, te = te, s0 = s0, k = k, 
                              sigma = sigma, y = y)$call
-shimko.extraction(market.calls = bsm.calls, call.strikes = k, r = r, y = y, te = te, 
+extract.shimko.density(market.calls = bsm.calls, call.strikes = k, r = r, y = y, te = te, 
                   s0 = s0, lower = -10, upper = 10)
 
-###
-### Note a0 is about equal to sigma, and a1 and a2 are close to zero.
-###
+#
+# Note: a0 is about equal to sigma, and a1 and a2 are close to zero.
+#
 
 }
-\keyword{ Put a keyword here... }
-\keyword{ Put a keyword here... }
+

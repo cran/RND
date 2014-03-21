@@ -1,4 +1,4 @@
-shimko.extraction <-
+extract.shimko.density <-
 function(market.calls, call.strikes, r, y, te, s0, lower, upper)
 {
 

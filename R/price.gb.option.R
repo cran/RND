@@ -1,4 +1,4 @@
-gb.option.price <-
+price.gb.option <-
 function(r, te, s0, k, y, a, b, v, w)
 {
   prob.1 = pgb(k, a = a, b = b, v = (v + 1/a) , w = (w - 1/a) )

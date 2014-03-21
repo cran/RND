@@ -1,4 +1,4 @@
-shimko.option.price <-
+price.shimko.option <-
 function(r, te, s0, k, y , a0, a1, a2)
 {
   
