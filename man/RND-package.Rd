@@ -12,13 +12,13 @@ This package is a collection of various functions to extract the implied risk ne
 \tabular{ll}{
 Package: \tab RND\cr
 Type: \tab Package\cr
-Version: \tab 1.1\cr
-Date: \tab 2014-03-21\cr
+Version: \tab 1.2\cr
+Date: \tab 2017-01-10\cr
 License: \tab GPL (>= 2)\cr
 }
 }
 \author{
-Kam Hamidieh <kh@zoolytics.com>
+Kam Hamidieh <khamidieh@gmail.com>
 }
 \references{
   E. Jondeau and S. Poon and M. Rockinger (2007):

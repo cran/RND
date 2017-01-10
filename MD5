@@ -1,5 +1,5 @@
-b29b37bc0b621ba928cbecac9a8728db *DESCRIPTION
-df390c53434517b304ac5db487184641 *NAMESPACE
+7a50b01369291080852e5f24eac63b90 *DESCRIPTION
+f3698da7506d2fb6f59ca43142557050 *NAMESPACE
 cccdac35cbb9aff0bf0f0ee7ab187912 *R/MOE.R
 cca82efcbbacf5fc7f4d18f403816dca *R/approximate.max.R
 d9221dfae4ee64ade087ef81c8c8aa5d *R/bsm.objective.R
@@ -34,7 +34,7 @@ dc32a685b19568c2c92923e1c026e00a *R/price.ew.option.R
 a969ef0185b8cc508b3d203a5ee2ea55 *data/sp500.2013.06.24.rda
 5e829319f88afcdb349b4d3a89dba451 *data/vix.2013.06.25.rda
 d0af0523fcb3b6cbfbfd9a4fc4c4a5c0 *man/MOE.Rd
-d7d3d62d9ef51effbb93ac4e3ec0f841 *man/RND-package.Rd
+8d27a3816dd75eb445dd2ea4b5320726 *man/RND-package.Rd
 3ae80e5d8a3d4aab3e80423658f65e03 *man/approximate.max.Rd
 cdfa6b12de7a5ffcbb27a20876455413 *man/bsm.objective.Rd
 fc618993fc7189ca96adabb700ceb36f *man/compute.implied.volatility.Rd
